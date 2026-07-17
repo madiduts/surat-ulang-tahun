@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Untuk Kamu 🕯️</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ===== TOKEN DESAIN =====
+     Background utama : #0d0b14 (hitam-aubergine gelap)
+     Background kartu  : #1a1625
+     Emas utama        : #c9a86a
+     Emas terang       : #e8c987
+     Krem teks         : #f2e9d8
+     Wine/merah anggur : #7a2e3a
+  */
+  :root{
+    --bg: #0d0b14;
+    --panel: #1a1625;
+    --gold: #c9a86a;
+    --gold-bright: #e8c987;
+    --cream: #f2e9d8;
+    --wine: #7a2e3a;
+    --muted: #9a8f9e;
+  }
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+  }
+  h1,h2,.display{
+    font-family: 'Playfair Display', serif;
+  }
+  .eyebrow{
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    color: var(--gold);
+    font-weight: 400;
+  }
+
+  /* ===== BINTANG / PARTIKEL AMBIEN ===== */
+  #stars{
+    position: fixed; inset: 0; z-index: 0; pointer-events:none;
+  }
+  .star{
+    position:absolute; width:2px; height:2px; background: var(--gold-bright);
+    border-radius:50%; opacity:0.5;
+    animation: twinkle 4s ease-in-out infinite;
+  }
+  @keyframes twinkle{
+    0%,100%{ opacity:0.15; transform:scale(1); }
+    50%{ opacity:0.9; transform:scale(1.6); }
+  }
+
+  section{
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding: 6vh 6vw;
+    text-align:center;
+  }
+
+  /* ===== HERO / AMPLOP ===== */
+  #hero{
+    gap: 28px;
+  }
+  #hero .eyebrow{ opacity:0.8; }
+  #hero h1{
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 500; font-style: italic;
+    color: var(--gold-bright);
+    margin: 0;
+  }
+
+  .envelope-wrap {
+    cursor: pointer;
+    width: min(300px, 75vw);
+    aspect-ratio: 3/2;
+    position: relative;
+    margin-top: 15px;
+    perspective: 1000px;
+  }
+  
+  .envelope {
+    position: absolute;
+    inset: 0;
+    transition: transform .6s cubic-bezier(.2,.8,.2,1);
+    transform-style: preserve-3d;
+  }
+  
+  /* Envelope back wall */
+  .envelope-back {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, #181422, #0d0915);
+    border: 1px solid rgba(201,168,106,0.2);
+    border-radius: 6px;
+    box-shadow: 0 15px 45px rgba(0,0,0,0.5);
+    z-index: 1;
+  }
+  
+  /* The Paper inside the envelope */
+  .envelope-paper {
+    position: absolute;
+    bottom: 8px;
+    left: 6%;
+    right: 6%;
+    height: 78%;
+    background: var(--cream);
+    border-radius: 4px;
+    padding: 15px;
+    z-index: 2;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  
+  /* Paper decorative lines to look like a letter */
+  .paper-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    opacity: 0.25;
+  }
+  .paper-line {
+    height: 2px;
+    background: var(--wine);
+    border-radius: 1px;
+  }
+  .paper-line.header {
+    width: 50%;
+    height: 4px;
+    margin-bottom: 4px;
+  }
+  .paper-line.short {
+    width: 30%;
+  }
+
+  /* The pocket (front) of the envelope */
+  .envelope-front {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, #231d2f, #140e1b);
+    clip-path: polygon(0 35%, 50% 68%, 100% 35%, 100% 100%, 0 100%);
+    border-radius: 6px;
+    z-index: 3;
+    filter: drop-shadow(0 -3px 6px rgba(0,0,0,0.35));
+  }
+  
+  /* The top flap */
+  .envelope-flap {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 68%;
+    background: linear-gradient(180deg, #2b253b, #1d182a);
+    clip-path: polygon(0 0, 100% 0, 100% 51.5%, 50% 100%, 0 51.5%);
+    transform-origin: top;
+    transition: transform .6s cubic-bezier(.2,.8,.2,1), z-index 0s linear 0.3s;
+    z-index: 4;
+    border-radius: 6px 6px 0 0;
+    filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3));
+  }
+
+  /* The Wax Seal */
+  .seal {
+    position: absolute;
+    top: 68%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 60%, #8a6c33 100%);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5), inset 0 0 6px rgba(0,0,0,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 700;
+    color: #3a2b10;
+    font-size: 1.05rem;
+    transition: all .4s cubic-bezier(.2,.8,.2,1);
+    z-index: 5;
+  }
+
+  /* Hover states */
+  .envelope-wrap:hover .envelope {
+    transform: translateY(-4px) rotateX(4deg);
+  }
+  .envelope-wrap:hover .seal {
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+
+  /* Opened states */
+  .envelope-wrap.opened .envelope-flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+  }
+  .envelope-wrap.opened .seal {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3) rotate(25deg);
+    pointer-events: none;
+  }
+  .envelope-wrap.opened .envelope-paper {
+    transform: translateY(-60%) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+  }
+  .envelope-wrap.opened .envelope {
+    transform: translateY(10px) scale(0.97);
+  }
+
+  .hint{
+    font-family:'Poppins', sans-serif; font-size:0.75rem;
+    color: var(--muted); letter-spacing:0.05em;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:.5;} 50%{opacity:1;} }
+
+  .scroll-cue{
+    position:absolute; bottom: 28px; font-family:'Poppins',sans-serif;
+    font-size:0.65rem; letter-spacing:0.3em; color: var(--muted);
+    opacity:0; transition: opacity 1s ease;
+    animation: bounce 2s infinite;
+  }
+  .scroll-cue.show{ opacity:0.7; }
+  
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-6px);
+    }
+    60% {
+      transform: translateY(-3px);
+    }
+  }
+
+  /* ===== SURAT (MODAL OVERLAY) ===== */
+  #letter {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 8, 16, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
+  #letter.show {
+    opacity: 1;
+    visibility: visible;
+  }
+  .letter-card {
+    max-width: 620px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: linear-gradient(180deg, rgba(201,168,106,0.08), transparent 40%), var(--panel);
+    border: 1px solid rgba(201,168,106,0.3);
+    border-radius: 12px;
+    padding: clamp(24px, 6vw, 48px) clamp(20px, 5vw, 40px);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 40px rgba(201,168,106,0.1);
+    transform: scale(0.3) translateY(150px);
+    opacity: 0;
+    transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+    position: relative;
+  }
+  #letter.show .letter-card {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+  .letter-card::-webkit-scrollbar {
+    width: 6px;
+  }
+  .letter-card::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .letter-card::-webkit-scrollbar-thumb {
+    background: rgba(201, 168, 106, 0.3);
+    border-radius: 3px;
+  }
+  .letter-card::-webkit-scrollbar-thumb:hover {
+    background: rgba(201, 168, 106, 0.5);
+  }
+  .letter-card h2{
+    font-style: italic; font-weight:600; color: var(--gold-bright);
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    margin: 0 0 22px;
+  }
+  .letter-card p{
+    font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+    line-height:1.75; color: var(--cream); opacity:0.92;
+    margin: 0 0 16px;
+    text-align:left;
+  }
+  .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: var(--gold);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    line-height: 1;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+  .close-btn:hover {
+    color: var(--gold-bright);
+    background: rgba(201, 168, 106, 0.1);
+    transform: scale(1.1) rotate(90deg);
+  }
+  .letter-sign{
+    margin-top: 26px; text-align:right;
+    font-style: italic; color: var(--gold);
+    font-size: 1.15rem;
+  }
+  .divider{
+    width:70px; height:1px; background: var(--gold);
+    opacity:0.5; margin: 22px auto;
+  }
+
+
+
+  /* ===== VIDEO ===== */
+  #video-section{ gap: 24px; }
+  #video-section h2{ color: var(--gold-bright); font-style:italic; font-weight:500; font-size: clamp(1.4rem,3.6vw,2rem); margin:0; }
+  .film-frame{
+    width:min(680px, 92vw);
+    background: #100c17;
+    border: 10px solid #1e1826;
+    border-radius: 4px;
+    box-shadow: 0 0 0 1px rgba(201,168,106,0.3), 0 30px 80px rgba(0,0,0,0.6);
+    padding: 14px;
+    position:relative;
+  }
+  .film-frame::before, .film-frame::after{
+    content:"• • • • • • • • • • • • • • •";
+    position:absolute; left:0; right:0; text-align:center;
+    color: rgba(201,168,106,0.35); letter-spacing:6px; font-size:10px;
+  }
+  .film-frame::before{ top:-4px; }
+  .film-frame::after{ bottom:-4px; }
+  .film-frame iframe {
+    width: 100%;
+    aspect-ratio: 16/9;
+    display: block;
+    border-radius: 2px;
+    background: #000;
+    border: none;
+  }
+  .video-caption{
+    font-family:'Poppins', sans-serif; font-size:0.75rem;
+    color: var(--muted); letter-spacing:0.05em;
+  }
+
+  /* ===== PENUTUP ===== */
+  #closing{ gap:16px; }
+  #closing .eyebrow{ opacity:0.7; }
+  #closing h2{
+    font-style: italic; font-weight:600; color: var(--gold-bright);
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    margin:0;
+  }
+  #closing p{ color: var(--muted); font-family:'Poppins',sans-serif; font-size:0.8rem; letter-spacing:0.05em; }
+
+  /* ===== FOTO FRAME PENUTUP ===== */
+  .photo-frame {
+    position: relative;
+    width: min(320px, 85vw);
+    min-height: 200px;
+    background: var(--panel);
+    border: 1px solid rgba(201, 168, 106, 0.25);
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    margin: 15px auto;
+    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    overflow: hidden;
+  }
+  .photo-frame:hover {
+    transform: translateY(-6px) rotate(2deg);
+    border-color: var(--gold-bright);
+    box-shadow: 0 25px 55px rgba(0, 0, 0, 0.5), 0 0 20px rgba(201, 168, 106, 0.15);
+  }
+  .photo-frame img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    display: block;
+    transition: transform 0.5s ease;
+    position: relative;
+    z-index: 2;
+  }
+  .photo-frame:hover img {
+    transform: scale(1.04);
+  }
+  .photo-placeholder {
+    position: absolute;
+    inset: 10px;
+    border: 1px dashed rgba(201, 168, 106, 0.4);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(13, 11, 20, 0.4);
+    z-index: 1;
+    color: var(--muted);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.75rem;
+    padding: 10px;
+    text-align: center;
+    min-height: 240px;
+  }
+  .photo-placeholder span {
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+    opacity: 0.7;
+  }
+
+  /* ===== LIGHTBOX FOTO ===== */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(8, 6, 12, 0.94);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    padding: 20px;
+  }
+  .lightbox.show {
+    opacity: 1;
+    visibility: visible;
+  }
+  .lightbox img {
+    max-width: 92vw;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid rgba(201, 168, 106, 0.3);
+    box-shadow: 0 25px 70px rgba(0,0,0,0.8), 0 0 30px rgba(201, 168, 106, 0.15);
+    transform: scale(0.5);
+    opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+  }
+  .lightbox.show img {
+    transform: scale(1);
+    opacity: 1;
+  }
+  .lightbox .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    color: var(--cream);
+    font-size: 2.5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+    html{ scroll-behavior: auto; }
+  }
+
+  /* ===== MUSIC CONTROL BUTTON ===== */
+  .music-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 999;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(26, 22, 37, 0.75);
+    border: 1px solid rgba(201, 168, 106, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--gold-bright);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 0 5px rgba(201, 168, 106, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .music-btn:hover {
+    transform: scale(1.08);
+    border-color: var(--gold-bright);
+    box-shadow: 0 6px 20px rgba(201, 168, 106, 0.2);
+  }
+  .music-btn:active {
+    transform: scale(0.95);
+  }
+  .music-icon {
+    font-size: 1.15rem;
+    transition: transform 0.5s ease;
+  }
+  
+  /* Spin animation when music plays */
+  .music-btn.playing .music-icon {
+    animation: rotateNote 3s linear infinite;
+  }
+  @keyframes rotateNote {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Mini Audio Wave Visualizer */
+  .music-waves {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 10px;
+    position: absolute;
+    bottom: 6px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .music-btn.playing .music-waves {
+    opacity: 0.8;
+  }
+  .music-btn.playing .music-icon {
+    transform: translateY(-4px);
+    font-size: 0.95rem;
+  }
+  .music-waves span {
+    width: 2px;
+    height: 100%;
+    background-color: var(--gold-bright);
+    border-radius: 1px;
+    animation: bounceWave 0.8s ease-in-out infinite alternate;
+    transform-origin: bottom;
+  }
+  .music-waves span:nth-child(2) { animation-delay: 0.2s; animation-duration: 0.6s; }
+  .music-waves span:nth-child(3) { animation-delay: 0.4s; animation-duration: 0.9s; }
+  .music-waves span:nth-child(4) { animation-delay: 0.1s; animation-duration: 0.7s; }
+
+  @keyframes bounceWave {
+    from { transform: scaleY(0.2); }
+    to { transform: scaleY(1); }
+  }
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+
+<!-- ================= AUDIO (MUSIK BACKGROUND) ================= -->
+<!-- 
+  TIPS MUSIK:
+  1. Siapkan file musik pilihanmu dalam format .mp3 (misalnya: lagu_romantis.mp3).
+  2. Masukkan file tersebut ke dalam folder `assets/`.
+  3. Ubah src="assets/music.mp3" di bawah ini agar sesuai dengan nama file lagumu.
+-->
+<audio id="bgMusic" loop>
+  <source src="assets/music.mp3" type="audio/mp3">
+  Browser kamu tidak mendukung pemutaran musik latar.
+</audio>
+
+<!-- Tombol Kontrol Musik Melayang -->
+<button class="music-btn" id="musicToggle" aria-label="Putar/Jeda Musik" title="Musik Latar">
+  <span class="music-icon">🎵</span>
+  <div class="music-waves">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</button>
+
+<!-- ================= HERO: AMPLOP ================= -->
+<section id="hero">
+  <span class="eyebrow">Sebuah surat kecil</span>
+  <h1>Untuk Zulfi Alisya</h1>
+  <div class="envelope-wrap" id="envelope" role="button" aria-label="Buka surat" tabindex="0">
+    <div class="envelope">
+      <div class="envelope-back"></div>
+      <div class="envelope-paper">
+        <div class="paper-lines">
+          <div class="paper-line header"></div>
+          <div class="paper-line"></div>
+          <div class="paper-line"></div>
+          <div class="paper-line short"></div>
+        </div>
+      </div>
+      <div class="envelope-front"></div>
+      <div class="envelope-flap"></div>
+      <div class="seal">HK</div>
+    </div>
+  </div>
+  <p class="hint">Klik amplopnya biar kebuka</p>
+  <div class="scroll-cue" id="scrollCue">Coba scroll ke bawah ↓</div>
+</section>
+
+<!-- ================= SURAT ================= -->
+<section id="letter" role="dialog" aria-modal="true" aria-labelledby="letter-title">
+  <div class="letter-card">
+    <button class="close-btn" id="closeLetter" aria-label="Tutup surat">&times;</button>
+    <h2 id="letter-title">Selamat ulang tahun, sayang.</h2>
+    <p>
+      Aku udah ke berapa kali ini ngucapin kamu selamat ulang tahun, itung sendiri dah ya. Tapi, gak bosen bosen aku bilang
+      ke kamu Selamat Ulang tahun! Semoga kamu selalu sehat, selalu bahagia, dan semua impian kamu tercapai. Aamiin.
+    </p>
+    <p>
+      Semoga semua yang aku kasih ke kamu ini cukup untuk kamu buat sadar, kalo aku beneran sayang sama kamu sayang. Makasih yah udah hidup di dunia ini, I feel lucky to have the opportunity to get to know you.   
+    </p>
+    <p>
+      Be happy Zulfi Alisya!
+    </p>
+    <div class="divider"></div>
+    <div class="letter-sign">— Madi</div>
+  </div>
+</section>
+
+<!-- ================= VIDEO ================= -->
+<section id="video-section">
+  <span class="eyebrow">Video buat kamu</span>
+  <h2>Enjoy watching!</h2>
+  <div class="film-frame">
+    <!-- 
+      TIPS YOUTUBE:
+      1. Upload videomu ke YouTube, atur visibilitas menjadi "Unlisted" (Tidak Publik) agar tidak bisa dicari orang asing.
+      2. Salin ID videonya. Contoh URL: https://www.youtube.com/watch?v=dQw4w9WgXcQ -> ID-nya adalah dQw4w9WgXcQ
+      3. Ganti "dQw4w9WgXcQ" di bawah ini dengan ID video YouTube milikmu sendiri.
+    -->
+    <iframe 
+      src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+      title="YouTube video player" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+      referrerpolicy="strict-origin-when-cross-origin" 
+      allowfullscreen>
+    </iframe>
+  </div>
+  <p class="video-caption">Klik ▶ buat liat videonya</p>
+</section>
+
+<!-- ================= PENUTUP ================= -->
+<section id="closing">
+  <span class="eyebrow">Selamat ulang tahun</span>
+  <h2>Zulfi Alisya♥</h2>
+  
+  <!-- Container Foto Penutup -->
+  <div class="photo-frame" role="button" aria-label="Perbesar foto" tabindex="0">
+    <img src="assets/Foto_Grid_Alisya.jpeg" alt="Foto Kenangan Zulfi Alisya" onerror="this.style.display='none';">
+    <div class="photo-placeholder">
+      <span>📷</span>
+      <p>Taruh Foto_Grid_Alisya.jpeg di folder assets/</p>
+    </div>
+  </div>
+
+  <p>Made W Love — 2026</p>
+</section>
+
+<!-- ================= LIGHTBOX FOTO ================= -->
+<div id="photoLightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Pratinjau Foto">
+  <button class="close-btn" id="closeLightbox" aria-label="Tutup pratinjau">&times;</button>
+  <img id="lightboxImg" src="" alt="Pratinjau Foto Kenangan">
+</div>
+
+<script>
+  // Bintang ambient
+  const starsContainer = document.getElementById('stars');
+  const STAR_COUNT = 60;
+  for(let i=0;i<STAR_COUNT;i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100+'%';
+    s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = (Math.random()*4)+'s';
+    starsContainer.appendChild(s);
+  }
+
+  // Buka amplop -> tampilkan surat -> scroll
+  const envelope = document.getElementById('envelope');
+  const letter = document.getElementById('letter');
+  const scrollCue = document.getElementById('scrollCue');
+  const closeLetterBtn = document.getElementById('closeLetter');
+  const bgMusic = document.getElementById('bgMusic');
+  const musicToggle = document.getElementById('musicToggle');
+  let opened = false;
+
+  function openEnvelope(){
+    if(opened) {
+      // Jika sudah pernah dibuka sekali, cukup buka kembali modalnya
+      letter.classList.add('show');
+      return;
+    }
+    opened = true;
+    envelope.classList.add('opened');
+    
+    // Putar musik secara otomatis saat amplop dibuka (bypasses browser autoplay policy via user click)
+    bgMusic.play().then(() => {
+      musicToggle.classList.add('playing');
+    }).catch(err => {
+      console.log("Autoplay musik terblokir atau berkas belum siap. Musik akan berputar saat tombol di-klik.");
+    });
+    
+    // Animasikan kertas naik terlebih dahulu, lalu buka modal popup surat
+    setTimeout(() => {
+      letter.classList.add('show');
+    }, 1000); // 1 detik agar flap terbuka dan kertas naik
+  }
+
+  function closeLetter(){
+    letter.classList.remove('show');
+    // Munculkan isyarat scroll setelah surat dibaca & ditutup
+    scrollCue.classList.add('show');
+  }
+
+  function toggleMusic(){
+    if (bgMusic.paused) {
+      bgMusic.play().then(() => {
+        musicToggle.classList.add('playing');
+      }).catch(err => console.log(err));
+    } else {
+      bgMusic.pause();
+      musicToggle.classList.remove('playing');
+    }
+  }
+
+  envelope.addEventListener('click', openEnvelope);
+  envelope.addEventListener('keypress', (e)=>{
+    if(e.key === 'Enter' || e.key === ' ') openEnvelope();
+  });
+
+  closeLetterBtn.addEventListener('click', closeLetter);
+  musicToggle.addEventListener('click', toggleMusic);
+
+  // Tutup modal ketika klik di luar kartu surat
+  letter.addEventListener('click', (e) => {
+    if (e.target === letter) {
+      closeLetter();
+    }
+  });
+
+  // Tutup modal menggunakan tombol Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && letter.classList.contains('show')) {
+      closeLetter();
+    }
+  });
+
+  // Lightbox Foto Penutup
+  const photoFrame = document.querySelector('.photo-frame');
+  const photoLightbox = document.getElementById('photoLightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const closeLightboxBtn = document.getElementById('closeLightbox');
+  const closingImg = photoFrame.querySelector('img');
+
+  function openLightbox() {
+    // Hanya buka lightbox jika gambar berhasil dimuat
+    if (closingImg && closingImg.style.display !== 'none' && closingImg.src) {
+      lightboxImg.src = closingImg.src;
+      photoLightbox.classList.add('show');
+    }
+  }
+
+  function closeLightbox() {
+    photoLightbox.classList.remove('show');
+  }
+
+  photoFrame.addEventListener('click', openLightbox);
+  photoFrame.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      openLightbox();
+    }
+  });
+
+  closeLightboxBtn.addEventListener('click', closeLightbox);
+
+  // Tutup lightbox ketika mengklik di luar gambar
+  photoLightbox.addEventListener('click', (e) => {
+    if (e.target === photoLightbox) {
+      closeLightbox();
+    }
+  });
+
+  // Tutup lightbox menggunakan tombol Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && photoLightbox.classList.contains('show')) {
+      closeLightbox();
+    }
+  });
+</script>
+
+</body>
+</html>
